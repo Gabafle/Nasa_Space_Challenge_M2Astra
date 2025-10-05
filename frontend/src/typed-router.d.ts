@@ -19,7 +19,10 @@ declare module 'vue-router/auto-routes' {
    */
   export interface RouteNamedMap {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
-    '/upload/upload_data': RouteRecordInfo<'/upload/upload_data', '/upload/upload_data', Record<never, never>, Record<never, never>>,
+    '/analyse/pages_users_analysis': RouteRecordInfo<'/analyse/pages_users_analysis', '/analyse/pages_users_analysis', Record<never, never>, Record<never, never>>,
+    '/analyser': RouteRecordInfo<'/analyser', '/analyser', Record<never, never>, Record<never, never>>,
+    '/FAQ/page_faq': RouteRecordInfo<'/FAQ/page_faq', '/FAQ/page_faq', Record<never, never>, Record<never, never>>,
+    '/upload_data': RouteRecordInfo<'/upload_data', '/upload_data', Record<never, never>, Record<never, never>>,
   }
 
   /**
@@ -35,6 +38,18 @@ declare module 'vue-router/auto-routes' {
   export interface _RouteFileInfoMap {
     'src/pages/index.vue': {
       routes: '/'
+      views: never
+    }
+    'src/pages/analyse/pages_users_analysis.vue': {
+      routes: '/analyse/pages_users_analysis'
+      views: never
+    }
+    'src/pages/analyser.vue': {
+      routes: '/analyser'
+      views: never
+    }
+    'src/pages/FAQ/page_faq.vue': {
+      routes: '/FAQ/page_faq'
       views: never
     }
     'src/pages/upload_data.vue': {

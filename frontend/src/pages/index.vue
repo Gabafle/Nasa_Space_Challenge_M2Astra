@@ -153,17 +153,6 @@ onMounted(() => {
   background: linear-gradient(30deg, #169976, #1DCD9F);
 }
 
-.btn-expert {
-  background: transparent;
-  border: solid 2px #1DCD9F;
-  color: white;
-  transition: all 0.3s ease;
-}
-
-.btn-expert:hover {
-  transform: scale(1.05);
-  background: #169976;
-}
 
 /* ================================
    ANIMATIONS

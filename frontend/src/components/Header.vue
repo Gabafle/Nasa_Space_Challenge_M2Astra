@@ -20,7 +20,7 @@
 
       <!-- Section droite : boutons -->
       <div class="btn-container">
-        <v-btn class="btn-menu">
+        <v-btn class="btn-menu" to="/">
           <v-icon class="icon-btn">mdi-home</v-icon>
           Home
         </v-btn>
@@ -29,9 +29,9 @@
           </v-icon>
           Login
         </v-btn>
-        <v-btn class="btn-menu">
-          <v-icon class="icon-btn">mdi-cog</v-icon>
-          Settings
+        <v-btn class="btn-menu" to="/FAQ/page_faq">
+          <v-icon class="icon-btn">mdi-magnify</v-icon>
+          FAQ
         </v-btn>
 
       </div>
