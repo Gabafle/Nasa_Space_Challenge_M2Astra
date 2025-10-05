@@ -1,4 +1,6 @@
 from backend.src.services.data_loader import DataLoader
+from backend.src.services.model_db_manager import ModelDataBaseManager
+from backend.src.services.model_predictor import ModelPredictor
 import pandas as pd
 
 
@@ -17,7 +19,9 @@ class PredictionOrchestrator:
         # Convertir les données en DataFrame
         df = pd.DataFrame(load_result.rows)
         
-        
+        # Prédiction
+        latest_model = ModelDataBaseManager().get_latest_model()
+        prediction = ModelPredictor(latest_model)
         predictions = self.model.predict(df)
 
         return {"predictions": predictions}

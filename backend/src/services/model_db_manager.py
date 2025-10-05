@@ -3,53 +3,56 @@ import os
 import threading
 from datetime import datetime
 from typing import Any, Dict
+import xgboost as xgb
+
+from backend.src.services.model_trainer import ModelTrainer
+
 
 class ModelDataBaseManager:
-    def __init__(self, db_path: str = "models_db.json"):
-        self.db_path = db_path
-        self.lock = threading.Lock()  # sécurité lecture/écriture concurrente
-        self._init_db()
-
-    def _init_db(self):
-        if not os.path.exists(self.db_path):
-            with open(self.db_path, "w", encoding="utf-8") as f:
-                json.dump({"latest_model_id": None, "models": {}}, f, indent=2, ensure_ascii=False)
+    def __init__(self):
+        self.path ="backend/src/data/json_data/models_json.json"
 
     def _read_db(self) -> Dict[str, Any]:
-        with self.lock, open(self.db_path, "r", encoding="utf-8") as f:
+        if not os.path.exists(self.path):
+            return {}
+        with open(self.path, "r", encoding="utf-8") as f:
             return json.load(f)
 
     def _write_db(self, data: Dict[str, Any]):
-        with self.lock, open(self.db_path, "w", encoding="utf-8") as f:
+        with self.lock, open(self.path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
+            
+    def _get_len_data_base(self) -> int:
+        return len(self._read_db())
+    
+    def get_latest_model(self):
+        json = self._read_db()
+        link = json["file_path"]
+        model =        
+    
+    def add_model(self,model, name: str) -> None:
+        
+        file_path = "backend/src/data/models_data_base"
+        last_model_number = self._get_len_data_base() + 1
+        file_path = model.save_model(file_path + "/model"+ str(last_model_number))
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        new_model = {}
+        new_model["author_name"] = name
+        new_model["timestamp"] = timestamp
+        new_model["model_path"] = file_path
+        new_model[""]
+        
+        
+        self._write_db(new_model)
+        
+        
+        
+        
 
-    def add_model(self, author: str, description: str, score: float, path: str) -> str:
-        db = self._read_db()
-        model_id = f"model_{len(db['models']) + 1}"
-        db["models"][model_id] = {
-            "author": author,
-            "description": description,
-            "score": score,
-            "path": path,
-            "created_at": datetime.now().isoformat()
-        }
-        db["latest_model_id"] = model_id
-        self._write_db(db)
-        return model_id
-
-    def get_latest_model(self) -> Dict[str, Any]:
-        db = self._read_db()
-        latest_id = db["latest_model_id"]
-        if latest_id is None:
-            return {}
-        return {latest_id: db["models"][latest_id]}
-
-    def get_model_history(self) -> Dict[str, Any]:
-        db = self._read_db()
-        return db["models"]
-
-    def get_model_history_as_json(self) -> str:
-        return json.dumps(self.get_model_history(), indent=2, ensure_ascii=False)
+    def get_latest_model(self):
+        # return le model. Lis dans le json et load le  parametre du latest model.
+        return
 
 
     

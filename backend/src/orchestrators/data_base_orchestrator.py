@@ -41,14 +41,13 @@ class DataBaseOrchestrator:
             }
             if data_frame.shape[0] > 100:
                 latest_data_set: pd.DataFrame = DataSetDataBaseManager().get_latest_dataset()
-                model_trainer = ModelTrainer()
 
                 features = ["pl_orbper", "pl_rade", "pl_tranmid", "st_teff"]
                 X_train = latest_data_set[features]
                 Y_train = latest_data_set["target"]
 
                 latest_model = ModelDataBaseManager().get_latest_model()
-                model_trainer.train(latest_model, X_train, Y_train)
+                ModelTrainer().train(latest_model, X_train, Y_train)
 
                 result["model_retrained"] = True
                 result["message"] += " Nouveau modèle entraîné avec succès."

@@ -9,7 +9,12 @@ from backend.src.models.shap import  ModelKind, ShapelyExplainer
 # Note: La classe ModelKind et ShapelyExplainer doivent être définies 
 # avant d'utiliser la classe XGBoostModel.
 
-class XGBoostModel:
+
+from backend.src.models.base_model import BaseModel
+
+
+
+class XGBoostModel(BaseModel):
     """
     Une interface pour le modèle de Classification XGBoost qui gère la standardisation
     et intègre l'explication SHAP après l'entraînement.

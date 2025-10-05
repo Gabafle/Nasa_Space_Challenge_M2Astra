@@ -65,6 +65,7 @@ class DataLoader:
         except Exception as exc:
             return self._error_result("load_failure", f"Erreur de chargement: {exc}", source_name)
 
+    ######### Le plus important #########
     def load_bytes(self, content: bytes, filename: str) -> DataLoadResult:
         source_name = filename
         try:
@@ -107,41 +108,3 @@ class DataLoader:
             source_name=source_name,
         )
 
-
-if __name__ == "__main__":
-    required_cols = ["pl_orbper", "pl_rade", "pl_tranmid", "st_teff"]
-
-    loader = DataLoader(required_columns=required_cols)
-
-    # === Cas 1 : Fichier inexistant
-    res = loader.load_file("fichier_inexistant.csv")
-    print(res.to_json())
-
-    # === Cas 2 : Colonnes manquantes
-    df_missing = pd.DataFrame({
-        "pl_orbper": [365],
-        "st_teff": [5778]
-    })
-    df_missing.to_csv("test_missing.csv", index=False)
-    res = loader.load_file("test_missing.csv")
-    print(res.to_json())
-
-    # === Cas 3 : Données valides
-    df_valid = pd.DataFrame({
-        "pl_orbper": [365, 420],
-        "pl_rade": [1.0, 1.2],
-        "pl_tranmid": [2458330.5, 2458331.2],
-        "st_teff": [5778, 5800],
-        "extra_col": ["ok", "ok"]
-    })
-    df_valid.to_csv("test_valid.csv", index=False)
-    res = loader.load_file("test_valid.csv")
-    print(res.to_json())
-
-    # === Cas 4 : Upload (bytes)
-    buffer = io.BytesIO()
-    df_valid.to_csv(buffer, index=False)
-    buffer.seek(0)
-    bytes_data = buffer.read()
-    res = loader.load_bytes(bytes_data, "upload.csv")
-    print(res.to_json())
