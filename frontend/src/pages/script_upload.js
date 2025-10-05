@@ -19,25 +19,54 @@ export default {
       const file = Array.isArray(this.excelFile) ? this.excelFile[0] : this.excelFile
       this.uploadError = null
 
-      if (file) {
-        this.excelPreview = {
-          name: file.name,
-          type: 'excel',
+      if (!file) {
+        this.removeExcelFile()
+        return
+      }
+
+      this.excelPreview = {
+        name: file.name,
+        type: 'table',
+      }
+
+      const reader = new FileReader()
+      const extension = file.name.split('.').pop()?.toLowerCase()
+
+      reader.onload = (event) => {
+        const result = event?.target?.result
+        if (!result) {
+          this.uploadError = 'Aucun contenu detecte dans le fichier.'
+          this.removeExcelFile()
+          return
         }
 
-        const reader = new FileReader()
-        reader.onload = (e) => {
-          const data = new Uint8Array(e.target.result)
-          const workbook = XLSX.read(data, { type: 'array' })
+        try {
+          let workbook
+          if (extension === 'csv') {
+            const text = typeof result === 'string' ? result : new TextDecoder().decode(result)
+            workbook = XLSX.read(text, { type: 'string' })
+          } else {
+            const buffer = result instanceof ArrayBuffer ? result : new ArrayBuffer(0)
+            const data = new Uint8Array(buffer)
+            workbook = XLSX.read(data, { type: 'array' })
+          }
+
           const firstSheet = workbook.Sheets[workbook.SheetNames[0]]
           const sheetData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 })
 
           this.excelData = sheetData
           this.resetVisibleRows()
+        } catch (err) {
+          console.error('Erreur lors de l\'analyse du fichier', err)
+          this.uploadError = 'Impossible de lire le fichier fourni.'
+          this.removeExcelFile()
         }
-        reader.readAsArrayBuffer(file)
+      }
+
+      if (extension === 'csv') {
+        reader.readAsText(file)
       } else {
-        this.removeExcelFile()
+        reader.readAsArrayBuffer(file)
       }
     },
 
@@ -57,6 +86,7 @@ export default {
         await api.post('/upload-excel', formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         })
+
         print()
         this.$router.push('/analyse/pages_users_analysis')
       } catch (error) {
@@ -93,3 +123,4 @@ export default {
     },
   },
 }
+
