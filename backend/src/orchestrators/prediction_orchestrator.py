@@ -62,4 +62,6 @@ class PredictionOrchestrator:
         latest_model = ModelDataBaseManager().get_latest_model()
         predictions  = ModelPredictor().predict(latest_model, df)
 
+        print(predictions)
+
         return predictions

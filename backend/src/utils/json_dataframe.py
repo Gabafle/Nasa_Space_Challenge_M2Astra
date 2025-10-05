@@ -41,6 +41,7 @@ class JsonDataFrame:
             for feat in self.feat_cols:
                 row[feat] = entry["vals"].get(feat, None)  # Use None if key is missing
 
+
             # Extract SHAP values, if they exist
             for feat in self.feat_cols:
                 shap_col = f"{feat}_SHAP"

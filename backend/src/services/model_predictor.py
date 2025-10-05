@@ -19,7 +19,8 @@ class ModelPredictor:
         
         # TODO remove TESTPRINT check col names
         print("Columns in output_df in ModelPredictor.predict Call:", output_df.columns.tolist())
-        
+
+        print(output_df)
         output_json_str = JsonDataFrame().dataframe_to_json(output_df)
 
         return output_json_str

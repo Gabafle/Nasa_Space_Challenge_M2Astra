@@ -115,10 +115,20 @@ class XGBoostModel(BaseModel):
         proba = pd.DataFrame(softmax(proba, axis=1), columns=[f'softmax_class_{i+1}' for i in range(proba.shape[1])], index=index_to_use)
 
         predictions = pd.Series(predictions, index=index_to_use, name='predicted_target')
+        print("===========")
+        print(predictions)
+        print("===========")
 
         # 6. Combiner le tout (la prédiction et les valeurs SHAP)
+        print("===========")
+        print(X)
+        print(X_test_scaled)
+        print(proba)
+        print(shap_df)
+        print(predictions)
+        print("===========")
         result_df = pd.concat([X, proba, shap_df, predictions], axis=1)
-        
+
         return result_df
 
     # ... (predict_proba, get_params, set_params restent inchangées)
