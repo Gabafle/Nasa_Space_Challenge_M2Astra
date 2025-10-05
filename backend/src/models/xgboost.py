@@ -117,25 +117,17 @@ class XGBoostModel(BaseModel):
             index=index_to_use, 
             columns=feature_names
         )
-
+        
+        # 4. Renommer les colonnes SHAP
         shap_df.columns = [f'{col}_shap' for col in shap_df.columns]
+        
+        # 5. Créer la colonne de prédiction
         predictions_series = pd.Series(predictions, name='Classe_Predite', index=index_to_use)
+        
+        # 6. Combiner le tout (la prédiction et les valeurs SHAP)
         result_df = pd.concat([predictions_series, shap_df], axis=1)
         
-        return result_dfdef predict(self, X_test: Union[np.ndarray, pd.DataFrame]) -> np.ndarray:
-        """
-        Standardise les nouvelles données et prédit leurs classes.
-        """
-        if isinstance(X_test, pd.DataFrame):
-            X_test_np = X_test.values
-        else:
-            X_test_np = X_test
-            
-        # Standardise les données de test (transform)
-        X_test_scaled = self.scaler.transform(X_test_np)
-        
-        # Fait la prédiction
-        return self.model.predict(X_test_scaled)
+        return result_df
 
     # ... (predict_proba, get_params, set_params restent inchangées)
     
