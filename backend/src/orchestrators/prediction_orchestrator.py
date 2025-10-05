@@ -14,6 +14,7 @@ class PredictionOrchestrator:
         #load_result = DataLoader().load_bytes(file_content, filename)
 
         df = pd.DataFrame(data["rows"], columns=data["columns"])
+
     
         
         # Prédiction

@@ -78,6 +78,8 @@ class XGBoostModel(BaseModel):
         ]
 
         X_test = X[feature_names]
+
+        print(f"{X_test.info()=}")
         
         X_test_np = X_test.values
         index_to_use = X_test.index

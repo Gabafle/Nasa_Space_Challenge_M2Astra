@@ -21,6 +21,8 @@ class JsonDataFrame:
         
         self.target_col = "target"
         self.target_col_front = "vrai label"
+
+
     
     def json_to_dataframe(self, json_str: str) -> pd.DataFrame:
         """ Respectez le format du front pour le json """
@@ -62,8 +64,13 @@ class JsonDataFrame:
             rows.append(row)
         
         # Convert the list of rows into a DataFrame
-        return pd.DataFrame(rows)
-    
+        df = pd.DataFrame(rows)
+        df[self.feat_cols] = df[self.feat_cols].astype(float)
+        print(f"{df=}")
+        print(f"{df.info()=}")
+        return df
+
+
     def dataframe_to_json(self, df: pd.DataFrame) -> str:
         """ doit respecter les souhait du front voir discord"""
         result = []
