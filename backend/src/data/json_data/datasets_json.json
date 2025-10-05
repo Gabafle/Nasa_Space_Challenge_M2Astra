@@ -6,6 +6,13 @@
       "file_path": "backend/src/data/datasets/initial_dataset.csv",
       "author_name": "Félix Bos",
       "created_at": "2025-09-28T14:00:00Z"
+    },
+    {
+      "created_at": "2025-10-05 16:41:51",
+      "author_name": "Félix Bos",
+      "file_path": "backend/src/data/datasets/initial_dataset2.csv",
+      "file_name": "Main Dataset",
+      "dataset_id": 2
     }
   ]
 }
