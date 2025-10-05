@@ -1,9 +1,11 @@
 from hmac import new
 import json
 import os
+from re import X
 import threading
 from datetime import datetime
 from typing import Any, Dict
+from unittest.mock import Base
 from backend.src.models.xgboost import XGBoostModel
 from backend.src.models.base_model import BaseModel
 
@@ -38,15 +40,21 @@ class ModelDataBaseManager:
         json = self._read_db()
         json_last = json["models"][-1]
         link = json_last["file_path"]
-        model = BaseModel()
-        model.load_model(link)
-        return model 
+        model_wrapper = XGBoostModel()
+        model_wrapper.load_model(link)
+        
+        
+        return model_wrapper
     
     def add_model(self,model, name: str) -> None:
         
         last_model_number = self._get_len_data_base() + 1
         file_path = self.target_path + "/model"+ str(last_model_number)
+        print("=================")
+        print(model.get_params())
+        print("=================")
         model.save_model(file_path)
+        
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         print(file_path)
         new_model = {}

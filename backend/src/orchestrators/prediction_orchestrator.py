@@ -14,18 +14,13 @@ class PredictionOrchestrator:
         #load_result = DataLoader().load_bytes(file_content, filename)
 
         df = pd.DataFrame(data["rows"], columns=data["columns"])
-        
-        print(df)
-
-       #if not load_result.ok:
-            # Cette erreur doit etre géré coté front end
-            #return {"error": "Data loading failed", "details": load_result.to_dict()
+    
         
         # Prédiction
-        #latest_model = ModelDataBaseManager().get_latest_model()
-        #model_predictor = ModelPredictor(latest_model)
-        #predictions = model_predictor.predict(df)
+        latest_model = ModelDataBaseManager().get_latest_model()
+        predictions  = ModelPredictor().predict(latest_model, df)
+    
 
-        #return {"predictions": predictions}
+        return {"predictions": predictions}
 
 

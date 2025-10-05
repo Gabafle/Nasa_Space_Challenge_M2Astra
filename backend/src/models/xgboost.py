@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 # Assurez-vous d'avoir les imports des classes ShapelyExplainer et ModelKind disponibles
 # from .ShapelyExplainer import ShapelyExplainer, ModelKind # Si c'était un module
-from xgboost import XGBClassifier
+from xgboost import XGBClassifier, Booster
 from sklearn.preprocessing import StandardScaler
 from typing import Union
 from backend.src.models.shap import  ModelKind, ShapelyExplainer
@@ -25,6 +25,7 @@ class XGBoostModel(BaseModel):
         """
         Initialise le modèle XGBClassifier.
         """
+        super().__init__()
         self.model = None
         
         self.scaler = StandardScaler()
@@ -174,8 +175,13 @@ class XGBoostModel(BaseModel):
         )
     
     def save_model(self, filepath: str):
-        json_string = self.model.save_raw(raw_format='json').decode('utf-8')
-        with open(filepath, 'w') as f:
-            f.write(json_string)
+        self.model.get_booster().save_model(filepath)
         
-        print(f"Modèle XGBoost sérialisé et enregistré en JSON dans : {filepath}")
+    def load_model(self, file_paths) -> None:
+        """
+        Load_model
+        """
+        self.model = XGBClassifier()
+        booster = Booster()
+        booster.load_model(file_paths)
+        self.model._Booster = booster

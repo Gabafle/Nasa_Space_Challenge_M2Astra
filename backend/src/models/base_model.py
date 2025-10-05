@@ -63,12 +63,8 @@ class BaseModel(ABC):
         pass
 
     
-    def load_model(self, file_paths) -> None:
-        """
-        Load_model
-        """
-        self.model = xgb.XGBClassifier()
-        self.model.load_model(file_paths)
+    
+       # print(self.model.get_params())
     
     
     def _check_trained(self):
