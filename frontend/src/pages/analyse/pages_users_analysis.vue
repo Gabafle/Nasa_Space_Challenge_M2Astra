@@ -13,10 +13,16 @@ type FeatureEntry = {
   value: string | number
 }
 
+type ShapleyEntry = {
+  key: string
+  value: string | number
+}
+
 type AnalysisResult = {
   id: string
   predictions: Prediction[]
   features: FeatureEntry[]
+  shapley_values: ShapleyEntry[]
 }
 const {isDoctor} = useAuth()
 
@@ -31,9 +37,17 @@ const analysisResults = ref<AnalysisResult[]>([
 
     features: [
       {key: 'Température', value: '521 K'},
-      {key: 'Masse', value: '1.2 M⊕'},
-      {key: 'Rayon', value: '0.96 R⊕'},
-      {key: 'Gravité', value: '9.8 m/s²'},
+      {key: 'Masse', value: '1.2 MâŠ•'},
+      {key: 'Rayon', value: '0.96 RâŠ•'},
+      {key: 'Gravité', value: '9.8 m/sÂ²'},
+      {key: 'Shapley', value: '11.6%'}
+    ],
+    shapley_values: [
+      {key: 'Température', value: '402 K'},
+      {key: 'Masse', value: '1.5 MâŠ•'},
+      {key: 'Rayon', value: '1.21 RâŠ•'},
+      {key: 'Gravité', value: '11.6 m/sÂ²'},
+      {key: 'Shapley', value: '11.6%'},
     ],
   },
   {
@@ -46,9 +60,17 @@ const analysisResults = ref<AnalysisResult[]>([
 
     features: [
       {key: 'Température', value: '392 K'},
-      {key: 'Masse', value: '0.8 M⊕'},
-      {key: 'Rayon', value: '1.10 R⊕'},
-      {key: 'Gravité', value: '7.1 m/s²'},
+      {key: 'Masse', value: '0.8 MâŠ•'},
+      {key: 'Rayon', value: '1.10 RâŠ•'},
+      {key: 'Gravité', value: '7.1 m/sÂ²'},
+      {key: 'Shapley', value: '11.6%'}
+    ],
+    shapley_values: [
+      {key: 'Température', value: '402 K'},
+      {key: 'Masse', value: '1.5 MâŠ•'},
+      {key: 'Rayon', value: '1.21 RâŠ•'},
+      {key: 'Gravité', value: '11.6 m/sÂ²'},
+      {key: 'Shapley', value: '11.6%'},
     ],
   },
   {
@@ -61,9 +83,17 @@ const analysisResults = ref<AnalysisResult[]>([
 
     features: [
       {key: 'Température', value: '218 K'},
-      {key: 'Masse', value: '2.4 M⊕'},
-      {key: 'Rayon', value: '1.45 R⊕'},
-      {key: 'Gravité', value: '14.3 m/s²'},
+      {key: 'Masse', value: '2.4 MâŠ•'},
+      {key: 'Rayon', value: '1.45 RâŠ•'},
+      {key: 'Gravité', value: '14.3 m/sÂ²'},
+      {key: 'Shapley', value: '11.6%'}
+    ],
+    shapley_values: [
+      {key: 'Température', value: '402 K'},
+      {key: 'Masse', value: '1.5 MâŠ•'},
+      {key: 'Rayon', value: '1.21 RâŠ•'},
+      {key: 'Gravité', value: '11.6 m/sÂ²'},
+      {key: 'Shapley', value: '11.6%'},
     ],
   },
   {
@@ -73,12 +103,19 @@ const analysisResults = ref<AnalysisResult[]>([
       {key: 'class2', label: 'Classe 2', value: 0.603},
       {key: 'class3', label: 'Classe 3', value: 0.421},
     ],
-    shapley: 0.22,
     features: [
       {key: 'Température', value: '677 K'},
-      {key: 'Masse', value: '1.9 M⊕'},
-      {key: 'Rayon', value: '1.02 R⊕'},
-      {key: 'Gravité', value: '11.2 m/s²'},
+      {key: 'Masse', value: '1.9 MâŠ•'},
+      {key: 'Rayon', value: '1.02 RâŠ•'},
+      {key: 'Gravité', value: '11.2 m/sÂ²'},
+      {key: 'Shapley', value: '11.6%'}
+    ],
+    shapley_values: [
+      {key: 'Température', value: '402 K'},
+      {key: 'Masse', value: '1.5 MâŠ•'},
+      {key: 'Rayon', value: '1.21 RâŠ•'},
+      {key: 'Gravité', value: '11.6 m/sÂ²'},
+      {key: 'Shapley', value: '11.6%'},
     ],
   },
   {
@@ -90,9 +127,17 @@ const analysisResults = ref<AnalysisResult[]>([
     ],
     features: [
       {key: 'Température', value: '495 K'},
-      {key: 'Masse', value: '3.1 M⊕'},
-      {key: 'Rayon', value: '1.65 R⊕'},
-      {key: 'Gravité', value: '13.4 m/s²'},
+      {key: 'Masse', value: '3.1 MâŠ•'},
+      {key: 'Rayon', value: '1.65 RâŠ•'},
+      {key: 'Gravité', value: '13.4 m/sÂ²'},
+      {key: 'Shapley', value: '11.6%'}
+    ],
+    shapley_values: [
+      {key: 'Température', value: '402 K'},
+      {key: 'Masse', value: '1.5 MâŠ•'},
+      {key: 'Rayon', value: '1.21 RâŠ•'},
+      {key: 'Gravité', value: '11.6 m/sÂ²'},
+      {key: 'Shapley', value: '11.6%'},
     ],
   },
   {
@@ -105,9 +150,17 @@ const analysisResults = ref<AnalysisResult[]>([
 
     features: [
       {key: 'Température', value: '311 K'},
-      {key: 'Masse', value: '0.9 M⊕'},
-      {key: 'Rayon', value: '0.88 R⊕'},
-      {key: 'Gravité', value: '8.4 m/s²'},
+      {key: 'Masse', value: '0.9 MâŠ•'},
+      {key: 'Rayon', value: '0.88 RâŠ•'},
+      {key: 'Gravité', value: '8.4 m/sÂ²'},
+      {key: 'Shapley', value: '11.6%'}
+    ],
+    shapley_values: [
+      {key: 'Température', value: '402 K'},
+      {key: 'Masse', value: '1.5 MâŠ•'},
+      {key: 'Rayon', value: '1.21 RâŠ•'},
+      {key: 'Gravité', value: '11.6 m/sÂ²'},
+      {key: 'Shapley', value: '11.6%'},
     ],
   },
   {
@@ -119,9 +172,17 @@ const analysisResults = ref<AnalysisResult[]>([
     ],
     features: [
       {key: 'Température', value: '430 K'},
-      {key: 'Masse', value: '1.3 M⊕'},
-      {key: 'Rayon', value: '1.05 R⊕'},
-      {key: 'Gravité', value: '10.2 m/s²'},
+      {key: 'Masse', value: '1.3 MâŠ•'},
+      {key: 'Rayon', value: '1.05 RâŠ•'},
+      {key: 'Gravité', value: '10.2 m/sÂ²'},
+      {key: 'Shapley', value: '11.6%'}
+    ],
+    shapley_values: [
+      {key: 'Température', value: '402 K'},
+      {key: 'Masse', value: '1.5 MâŠ•'},
+      {key: 'Rayon', value: '1.21 RâŠ•'},
+      {key: 'Gravité', value: '11.6 m/sÂ²'},
+      {key: 'Shapley', value: '11.6%'},
     ],
   },
   {
@@ -133,9 +194,17 @@ const analysisResults = ref<AnalysisResult[]>([
     ],
     features: [
       {key: 'Température', value: '268 K'},
-      {key: 'Masse', value: '0.6 M⊕'},
-      {key: 'Rayon', value: '0.77 R⊕'},
-      {key: 'Gravité', value: '6.9 m/s²'},
+      {key: 'Masse', value: '0.6 MâŠ•'},
+      {key: 'Rayon', value: '0.77 RâŠ•'},
+      {key: 'Gravité', value: '6.9 m/sÂ²'},
+      {key: 'Shapley', value: '11.6%'}
+    ],
+    shapley_values: [
+      {key: 'Température', value: '402 K'},
+      {key: 'Masse', value: '1.5 MâŠ•'},
+      {key: 'Rayon', value: '1.21 RâŠ•'},
+      {key: 'Gravité', value: '11.6 m/sÂ²'},
+      {key: 'Shapley', value: '11.6%'},
     ],
   },
   {
@@ -147,10 +216,17 @@ const analysisResults = ref<AnalysisResult[]>([
     ],
     features: [
       {key: 'Température', value: '358 K'},
-      {key: 'Masse', value: '1.1 M⊕'},
-      {key: 'Rayon', value: '0.99 R⊕'},
-      {key: 'Gravité', value: '9.4 m/s²'},
-      {key: 'Shapley', value: '11.6'}
+      {key: 'Masse', value: '1.1 MâŠ•'},
+      {key: 'Rayon', value: '0.99 RâŠ•'},
+      {key: 'Gravité', value: '9.4 m/sÂ²'},
+      {key: 'Shapley', value: '11.6%'}
+    ],
+    shapley_values: [
+      {key: 'Température', value: '402 K'},
+      {key: 'Masse', value: '1.5 MâŠ•'},
+      {key: 'Rayon', value: '1.21 RâŠ•'},
+      {key: 'Gravité', value: '11.6 m/sÂ²'},
+      {key: 'Shapley', value: '11.6%'},
     ],
   },
   {
@@ -161,11 +237,18 @@ const analysisResults = ref<AnalysisResult[]>([
       {key: 'class3', label: 'Classe 3', value: 0.274},
     ],
     features: [
-      {key: 'Température', value: '402 K'},
-      {key: 'Masse', value: '1.5 M⊕'},
-      {key: 'Rayon', value: '1.21 R⊕'},
-      {key: 'Gravité', value: '11.6 m/s²'},
-      {key: 'Shapley', value: '11.6'},
+      {key: 'TempÃ©rature', value: '402 K'},
+      {key: 'Masse', value: '1.5 MâŠ•'},
+      {key: 'Rayon', value: '1.21 RâŠ•'},
+      {key: 'GravitÃ©', value: '11.6 m/sÂ²'},
+      {key: 'Shapley', value: '11.6%'},
+    ],
+    shapley_values: [
+      {key: 'TempÃ©rature', value: '402 K'},
+      {key: 'Masse', value: '1.5 MâŠ•'},
+      {key: 'Rayon', value: '1.21 RâŠ•'},
+      {key: 'GravitÃ©', value: '11.6 m/sÂ²'},
+      {key: 'Shapley', value: '11.6%'},
     ],
   },
 ])
@@ -187,6 +270,10 @@ function formatDecimal(value: number) {
 function getTopPrediction(result: AnalysisResult) {
   return result.predictions.reduce((best, current) => (current.value > best.value ? current : best))
 }
+
+function getShapleyEntry(result: AnalysisResult, featureKey: string) {
+  return result.shapley_values.find((entry) => entry.key === featureKey)
+}
 </script>
 
 <template>
@@ -196,7 +283,7 @@ function getTopPrediction(result: AnalysisResult) {
         <v-container class="pa-6">
           <v-card class="table-container" elevation="0">
             <v-card-text class="intro-text">
-              Analyse des Exoplanètes — Résultats détaillés
+              Analyse des ExoplanÃ¨tes â€” RÃ©sultats dÃ©taillÃ©s
             </v-card-text>
 
             <v-alert
@@ -206,7 +293,7 @@ function getTopPrediction(result: AnalysisResult) {
               density="comfortable"
               class="mb-4 doctor-alert"
             >
-              Mode docteur activé : accédez aux outils avancés et annotations spécialisées ci-dessous.
+              Mode docteur activé : accédez aux outils avancÃcés et annotations spécicialisées ci-dessous.
             </v-alert>
 
             <div class="table-header">
@@ -214,9 +301,8 @@ function getTopPrediction(result: AnalysisResult) {
               <span class="cell">Classe 1</span>
               <span class="cell">Classe 2</span>
               <span class="cell">Classe 3</span>
-              <span class="cell">Classe dominante</span>
-              <span class="cell">Shapley</span>
-              <span class="cell cell-actions">Détails</span>
+              <span class="cell">Prédiction</span>
+
             </div>
 
             <v-expansion-panels class="results-panels" multiple variant="accordion">
@@ -238,7 +324,6 @@ function getTopPrediction(result: AnalysisResult) {
                         formatDecimal(result.predictions.find((p) => p.key === 'class3')?.value ?? 0)
                       }}</span>
                     <span class="cell">{{ formatDecimal(getTopPrediction(result).value) }}</span>
-                    <span class="cell">{{ result.shapeley }}</span>
                   </div>
                 </v-expansion-panel-title>
                 <v-expansion-panel-text class="panel-text">
@@ -247,12 +332,19 @@ function getTopPrediction(result: AnalysisResult) {
                     <tr>
                       <th>Feature</th>
                       <th>Valeur</th>
+                      <th>Shapley</th>
+                      <th>Valeur</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="feature in result.features" :key="feature.key">
+                    <tr
+                      v-for="feature in result.features"
+                      :key="feature.key"
+                    >
                       <td>{{ feature.key }}</td>
                       <td>{{ feature.value }}</td>
+                      <td>{{ getShapleyEntry(result, feature.key)?.key ?? '-' }}</td>
+                      <td>{{ getShapleyEntry(result, feature.key)?.value ?? '-' }}</td>
                     </tr>
                     </tbody>
                   </v-table>
@@ -261,14 +353,8 @@ function getTopPrediction(result: AnalysisResult) {
                     v-if="isDoctor"
                     class="doctor-actions"
                   >
-                    <v-btn size="small" color="primary" variant="tonal">
-                      <v-icon start>mdi-flask-outline</v-icon>
-                      Ajouter une note clinique
-                    </v-btn>
-                    <v-btn size="small" color="secondary" variant="text">
-                      <v-icon start>mdi-file-chart</v-icon>
-                      Exporter le rapport
-                    </v-btn>
+
+
                   </div>
                 </v-expansion-panel-text>
               </v-expansion-panel>
@@ -292,11 +378,29 @@ function getTopPrediction(result: AnalysisResult) {
           </v-card>
         </v-container>
       </v-card>
+      <v-container class="btn-area">
+        <v-btn to="/upload_data"> Back</v-btn>
+        <v-btn   variant="text" class="btn-download">
+          <v-icon start>mdi-file-chart</v-icon>
+          Exporter le rapport
+        </v-btn>
+      </v-container>
+
     </v-container>
   </v-app>
 </template>
 
 <style scoped>
+.btn-download{
+  color: #169976;
+  border: 1px solid ;
+}
+.btn-area{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2%;
+}
+
 .page-wrapper {
   padding-top: 48px;
   width: 100%;
@@ -343,7 +447,6 @@ function getTopPrediction(result: AnalysisResult) {
 }
 
 .result-panel {
-
   margin-top: 8px;
   border-radius: 12px !important;
   border: 1px solid #2c2c2c !important;
@@ -363,7 +466,7 @@ function getTopPrediction(result: AnalysisResult) {
 
 .row-grid {
   display: grid;
-  grid-template-columns: 190px repeat(4, minmax(170px, 1fr)) 140px 1px;
+  grid-template-columns: 260px repeat(4, minmax(200px, 1fr)) 200px 1px;
   align-items: center;
   padding: 16px;
   color: #f5f5f5;
@@ -496,3 +599,6 @@ function getTopPrediction(result: AnalysisResult) {
   }
 }
 </style>
+
+
+

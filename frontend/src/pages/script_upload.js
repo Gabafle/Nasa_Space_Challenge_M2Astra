@@ -57,6 +57,7 @@ export default {
         await api.post('/upload-excel', formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         })
+        print()
         this.$router.push('/analyse/pages_users_analysis')
       } catch (error) {
         console.error('Upload Excel error', error)
