@@ -125,5 +125,9 @@ class XGBoostModel:
         """Définit les paramètres du modèle Scikit-learn, nécessaire pour GridSearchCV."""
         return self.model.set_params(**params)
     
-    def save_model(self):
-        return self.model.save_raw(raw_format= 'json').decode('utf-8')
+    def save_model(self, filepath: str):
+        json_string = self.model.save_raw(raw_format='json').decode('utf-8')
+        with open(filepath, 'w') as f:
+            f.write(json_string)
+        
+        print(f"Modèle XGBoost sérialisé et enregistré en JSON dans : {filepath}")
