@@ -1,16 +1,15 @@
 import pandas as pd
 
 class DataSetDataBaseManager:
-    def __init__(self,):
-        # On initialise avec notre data frame. Cela évoluera dans le temps
-        self.latest_dataset = None
-        self.history_dataset = []
-
+    def __init__(self):
+        pass
+    
     def get_latest_dataset(self) -> pd.DataFrame:
-        return self.latest_dataset
+        """ Search with json file data.json. based on date."""
+        pass
 
-    def add_to_dataset_database(self, new_data: pd.DataFrame) -> None:
-        """ Conctène new data avec self.latest_dataset. Penser à bien verifier les bonne valeur de colonne ... """
+    def add_to_dataset_database(self, new_data :pd.DataFrame) -> None:
+        """ Chercher dans le json le dernier data set. Modifier concaténant le  data frame."""
         pass
     
     def get_history(self) -> list[pd.DataFrame]:

@@ -8,7 +8,7 @@ from sklearn.metrics import (
 )
 
 
-class ModelManager:
+class ModelEvaluator:
     """
     Classe de gestion complète d'un modèle sklearn :
       - Entraînement (avec cross-validation détaillée)

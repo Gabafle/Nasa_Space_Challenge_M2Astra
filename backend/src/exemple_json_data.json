@@ -5,6 +5,8 @@
   "columns_names" : ["age", "revenu", "score_credit"],
   "target_names" : ["Target1, Target 2, Target3 "],
   "data": [
+
+    
     { "ID" : "Planet 1",
       "feature": [55000, 0.8, 0.1],
       "prob": [0.1, 0.8, 0.1],
