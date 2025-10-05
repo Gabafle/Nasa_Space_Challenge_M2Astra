@@ -3,7 +3,6 @@ import numpy as np
 # Assurez-vous d'avoir les imports des classes ShapelyExplainer et ModelKind disponibles
 # from .ShapelyExplainer import ShapelyExplainer, ModelKind # Si c'était un module
 from xgboost import XGBClassifier, Booster
-from sklearn.preprocessing import StandardScaler
 from typing import Union
 from backend.src.models.shap import  ModelKind, ShapelyExplainer
 # Note: La classe ModelKind et ShapelyExplainer doivent être définies 
@@ -27,8 +26,7 @@ class XGBoostModel(BaseModel):
         """
         super().__init__()
         self.model = None
-        
-        self.scaler = StandardScaler()
+
         self.explainer = None  # Contiendra l'instance ShapelyExplainer
 
     def train(self, X_train: Union[np.ndarray, pd.DataFrame], y_train: Union[np.ndarray, pd.Series]):
@@ -42,7 +40,7 @@ class XGBoostModel(BaseModel):
             X_train_np = X_train
             
         # 1. Standardisation
-        X_train_scaled = self.scaler.fit_transform(X_train_np)
+        X_train_scaled = X_train_np
         
         # 2. Entraînement du modèle XGBoost
         self.model.fit(X_train_scaled, y_train)
@@ -85,7 +83,7 @@ class XGBoostModel(BaseModel):
         index_to_use = X_test.index
             
         # Standardise les données de test (transform)
-        X_test_scaled = self.scaler.transform(X_test_np)
+        X_test_scaled = X_test_np
         
         # 1. Faire la prédiction de classe
         predictions = self.model.predict(X_test_scaled)
@@ -139,7 +137,7 @@ class XGBoostModel(BaseModel):
             X_np = X
 
         # Standardise les données avec le scaler appris lors de l'entraînement
-        X_scaled = self.scaler.transform(X_np)
+        X_scaled = X_np
         
         # Retourne les valeurs SHAP en utilisant l'explainer interne
         return self.explainer.explain_prediction(X_scaled)
@@ -154,7 +152,7 @@ class XGBoostModel(BaseModel):
         else:
             X_test_np = X_test
             
-        X_test_scaled = self.scaler.transform(X_test_np)
+        X_test_scaled = X_test_np
         return self.model.predict_proba(X_test_scaled)
 
     def get_params(self, deep=True):
