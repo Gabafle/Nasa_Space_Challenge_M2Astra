@@ -5,6 +5,7 @@ from backend.src.utils.json_dataframe import JsonDataFrame
 from backend.src.services.model_trainer import ModelTrainer
 from backend.src.services.model_db_manager import ModelDataBaseManager
 
+import json
 
 
 class DataBaseOrchestrator:
