@@ -19,20 +19,10 @@ class DataBaseOrchestrator:
         """
         Ajoute de nouvelles données à la base, déclenche un réentraînement 
         du modèle si le dataset est suffisamment grand, 
-        et retourne un résumé JSON pour le front-end.
-        Returns:
-            Json: Objet JSON contenant le résultat de l'opération :
-                {
-                    "status": "success" | "error",
-                    "message": str,
-                    "rows_added": int,
-                    "model_retrained": bool,
-                    "model_metrics": dict | None
-                }
-        """
+        et retourne un résumé JSON pour le front-end."""
         try:
             data_frame:pd.DataFrame = JsonDataFrame().json_to_dataframe(new_data)
-            DataSetDataBaseManager().add_to_dataset_database(data_frame) # on ajoute les nouvelles données labélisé.
+            DataSetDataBaseManager().add_to_dataset_database(data_frame)
             result = {
                 "status": "success",
                 "message": f"{data_frame.shape[0]} lignes ajoutées à la base de données.",
@@ -43,7 +33,7 @@ class DataBaseOrchestrator:
                 latest_data_set: pd.DataFrame = DataSetDataBaseManager().get_latest_dataset()
 
                 features = ["pl_orbper", "pl_rade", "pl_tranmid", "st_teff"]
-                X_train = latest_data_set[features]
+                X_train = latest_data_set.drop([])
                 Y_train = latest_data_set["target"]
 
                 latest_model = ModelDataBaseManager().get_latest_model()

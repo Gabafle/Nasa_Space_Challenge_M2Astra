@@ -1,8 +1,10 @@
-import datetime
+from datetime import datetime
 from typing import Any, Dict
 import pandas as pd
 import os
 import json
+
+
 
 class DataSetDataBaseManager:
     def __init__(self):
@@ -39,26 +41,22 @@ class DataSetDataBaseManager:
         return latest_data_frame 
     
 
-    def add_to_dataset_database(self, author:str, email_author: str, new_data :pd.DataFrame) -> None:
+    def add_to_dataset_database(self, author:str, new_data :pd.DataFrame) -> None:
         """ Chercher dans le json le dernier data set. Modifier concaténant le  data frame."""
         # get latest dataframe as pandas
         latest_data_frame = self.get_latest_dataset()
-        
-        # concerver le latest
-        temp = latest_data_frame
-        
+
         # concénation des deux df 
-        latest_data_frame = pd.concat(latest_data_frame, new_data, ignore_index=True)
-        
+        latest_data_frame = pd.concat([latest_data_frame, new_data], ignore_index=True)
         new_data_set = {}
         new_data_set["created_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         new_data_set["author_name"] = author
-        new_data_set["file_path"] = self.target_path + str(self._get_len_data_base() + 1) + ".csv"
-        
+        new_data_set["file_path"] = self.target_path + f"/initial_dataset{self._get_len_data_base()+ 1}" + ".csv"
+        new_data_set["file_name"] = "Main Dataset"
+        new_data_set["dataset_id"] = self._get_len_data_base() + 1
+        latest_data_frame.to_csv(new_data_set["file_path"])
+        self._write_db(new_data_set)
 
-        
-        # Add the temp / update json mapper
-        pass
 
 
 if __name__ == "__main__":
@@ -71,4 +69,12 @@ if __name__ == "__main__":
 
     df_latest = manager.get_latest_dataset()
     print(df_latest)
+    
+    df = pd.DataFrame({df_latest.columns[i]: np.random.rand(10) for i in range(len(df_latest.columns))})
+    
+    manager.add_to_dataset_database("Félix Bos", df)
+    print("------------")
+    last_data = manager.get_latest_dataset()
+    print(last_data)
+    
     print("\n=== ✅ Test terminé ===")

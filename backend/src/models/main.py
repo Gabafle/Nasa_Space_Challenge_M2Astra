@@ -20,7 +20,7 @@ xgb_model.train(X_train, y_train)
 ModelDataBaseManager().add_model(xgb_model, name="Félix Bos")
 
 
-print("-----COUUUUUUU----")
+
 print(ModelDataBaseManager().get_latest_model().get_params())
 
 

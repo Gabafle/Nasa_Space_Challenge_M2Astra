@@ -34,6 +34,13 @@
       "file_path": "backend/src/data/models_data_base/model5",
       "model_name": "XGBoostModel",
       "model_id": 5
+    },
+    {
+      "author_name": "Félix Bos",
+      "created_at": "2025-10-05 15:59:50",
+      "file_path": "backend/src/data/models_data_base/model6",
+      "model_name": "XGBoostModel",
+      "model_id": 6
     }
   ]
 }
