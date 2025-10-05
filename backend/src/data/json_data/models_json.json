@@ -2,45 +2,10 @@
   "models": [
     {
       "author_name": "Félix Bos",
-      "created_at": "2025-10-05 15:38:33",
+      "created_at": "2025-10-05 19:09:22",
       "file_path": "backend/src/data/models_data_base/model1",
       "model_name": "XGBoostModel",
       "model_id": 1
-    },
-    {
-      "author_name": "Félix Bos",
-      "created_at": "2025-10-05 15:47:18",
-      "file_path": "backend/src/data/models_data_base/model2",
-      "model_name": "XGBoostModel",
-      "model_id": 2
-    },
-    {
-      "author_name": "Félix Bos",
-      "created_at": "2025-10-05 15:48:44",
-      "file_path": "backend/src/data/models_data_base/model3",
-      "model_name": "XGBoostModel",
-      "model_id": 3
-    },
-    {
-      "author_name": "Félix Bos",
-      "created_at": "2025-10-05 15:49:10",
-      "file_path": "backend/src/data/models_data_base/model4",
-      "model_name": "XGBoostModel",
-      "model_id": 4
-    },
-    {
-      "author_name": "Félix Bos",
-      "created_at": "2025-10-05 15:49:48",
-      "file_path": "backend/src/data/models_data_base/model5",
-      "model_name": "XGBoostModel",
-      "model_id": 5
-    },
-    {
-      "author_name": "Félix Bos",
-      "created_at": "2025-10-05 15:59:50",
-      "file_path": "backend/src/data/models_data_base/model6",
-      "model_name": "XGBoostModel",
-      "model_id": 6
     }
   ]
 }
