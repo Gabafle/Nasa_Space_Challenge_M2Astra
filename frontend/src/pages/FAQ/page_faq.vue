@@ -76,7 +76,6 @@ export default {
 .card-container {
   margin-top: 5%;
   width: 100%;
-  max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
   background: #1a1a1a;
