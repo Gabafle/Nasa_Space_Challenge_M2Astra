@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 from backend.src.utils.json_dataframe import JsonDataFrame
 
-# TODOOOOOOO
+
 class ModelPredictor:
     def __init__(self):
         
@@ -14,6 +14,8 @@ class ModelPredictor:
     def predict(self, model, X: pd.DataFrame) -> str:
         """Retourne un JSON détaillé pour chaque observation (planète)."""
         output_df = model.predict(X)
+        
+        
         
         # TODO remove TESTPRINT check col names
         print("Columns in output_df in ModelPredictor.predict Call:", output_df.columns.tolist())

@@ -53,6 +53,7 @@ class DataSetDataBaseManager:
         new_data_set = {}
         new_data_set["created_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         new_data_set["author_name"] = author
+        new_data_set["file_path"] = self.target_path + str(self._get_len_data_base() + 1) + ".csv"
         
 
         

@@ -21,21 +21,11 @@ class XGBoostModel(BaseModel):
     et intègre l'explication SHAP après l'entraînement.
     """
     
-    def __init__(self, n_estimators=100, max_depth=6, learning_rate=0.1, 
-                 random_state=None, n_jobs=-1, **kwargs):
+    def __init__(self):
         """
         Initialise le modèle XGBClassifier.
         """
-        self.model = XGBClassifier(
-            n_estimators=n_estimators,
-            max_depth=max_depth,
-            learning_rate=learning_rate,
-            random_state=random_state,
-            n_jobs=n_jobs,
-            use_label_encoder=False, 
-            eval_metric='mlogloss',
-            **kwargs
-        )
+        self.model = None
         
         self.scaler = StandardScaler()
         self.explainer = None  # Contiendra l'instance ShapelyExplainer
@@ -75,6 +65,7 @@ class XGBoostModel(BaseModel):
         Standardise les nouvelles données, prédit les classes, et retourne un DataFrame
         contenant la classe prédite et les valeurs SHAP pour la Classe 2.
         """
+
         feature_names = [
             "pl_orbper",
             "pl_rade",
@@ -169,9 +160,18 @@ class XGBoostModel(BaseModel):
         """Retourne les paramètres du modèle Scikit-learn, nécessaire pour GridSearchCV."""
         return self.model.get_params(deep=deep)
 
-    def set_params(self, **params):
+    def set_params(self, n_estimators=55, max_depth=9, learning_rate=0.1, random_state=None, n_jobs=-1, **kwargs):
         """Définit les paramètres du modèle Scikit-learn, nécessaire pour GridSearchCV."""
-        return self.model.set_params(**params)
+        self.model = XGBClassifier(
+            n_estimators=n_estimators,
+            max_depth=max_depth,
+            learning_rate=learning_rate,
+            random_state=random_state,
+            n_jobs=n_jobs,
+            use_label_encoder=False, 
+            eval_metric='mlogloss',
+            **kwargs
+        )
     
     def save_model(self, filepath: str):
         json_string = self.model.save_raw(raw_format='json').decode('utf-8')
