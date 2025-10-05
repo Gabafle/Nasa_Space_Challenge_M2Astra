@@ -126,4 +126,4 @@ class XGBoostModel:
         return self.model.set_params(**params)
     
     def save_model(self):
-        return self.model.save_raw(raw_format= 'json')
+        return self.model.save_raw(raw_format= 'json').decode('utf-8')
