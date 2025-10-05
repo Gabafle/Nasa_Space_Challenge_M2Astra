@@ -9,6 +9,7 @@ from backend.src.models.shap import  ModelKind, ShapelyExplainer
 # Note: La classe ModelKind et ShapelyExplainer doivent être définies 
 # avant d'utiliser la classe XGBoostModel.
 
+from scipy.special import softmax  # To apply softmax function
 
 from backend.src.models.base_model import BaseModel
 
@@ -38,7 +39,6 @@ class XGBoostModel(BaseModel):
         
         self.scaler = StandardScaler()
         self.explainer = None  # Contiendra l'instance ShapelyExplainer
-        self.shap_values = None  # Contient les valeurs SHAP globales (ex: pour le X_train)
 
     def train(self, X_train: Union[np.ndarray, pd.DataFrame], y_train: Union[np.ndarray, pd.Series]):
         """
@@ -68,28 +68,29 @@ class XGBoostModel(BaseModel):
             # donc nous passons les données standardisées.
             background_data=X_train_scaled 
         )
-        
-        # 4. Calcul des valeurs SHAP globales sur le jeu d'entraînement (Optionnel)
-        # Ces valeurs sont utiles pour les graphiques de résumé globaux.
-        self.shap_values = self.explainer.explain_prediction(X_train_scaled)
 
 
-    def predict(self, X_test: Union[np.ndarray, pd.DataFrame]) -> pd.DataFrame:
+    def predict(self, X: pd.DataFrame) -> pd.DataFrame:
         """
         Standardise les nouvelles données, prédit les classes, et retourne un DataFrame
         contenant la classe prédite et les valeurs SHAP pour la Classe 2.
         """
-        is_dataframe = isinstance(X_test, pd.DataFrame)
+        feature_names = [
+            "pl_orbper",
+            "pl_rade",
+            "pl_tranmid",
+            "pl_trandep",
+            "st_teff",
+            "st_rad",
+            "st_logg",
+            "ra",
+            "dec",
+        ]
+
+        X_test = X[feature_names]
         
-        if is_dataframe:
-            X_test_np = X_test.values
-            index_to_use = X_test.index
-            # Utilise les noms de features enregistrés lors du train, pour être sûr de la correspondance
-            feature_names = self.feature_names 
-        else:
-            X_test_np = X_test
-            index_to_use = None
-            feature_names = [f'feature_{i}' for i in range(X_test_np.shape[1])]
+        X_test_np = X_test.values
+        index_to_use = X_test.index
             
         # Standardise les données de test (transform)
         X_test_scaled = self.scaler.transform(X_test_np)
@@ -119,13 +120,15 @@ class XGBoostModel(BaseModel):
         )
         
         # 4. Renommer les colonnes SHAP
-        shap_df.columns = [f'{col}_shap' for col in shap_df.columns]
+        shap_df.columns = [f'{col}_SHAP' for col in shap_df.columns]
         
-        # 5. Créer la colonne de prédiction
-        predictions_series = pd.Series(predictions, name='Classe_Predite', index=index_to_use)
-        
+        proba = self.model.predict_proba(X_test)
+        proba = pd.DataFrame(softmax(proba, axis=1), columns=[f'softmax_class_{i+1}' for i in range(proba.shape[1])], index=index_to_use)
+
+        predictions = pd.Series(predictions, index=index_to_use, name='predicted_target')
+
         # 6. Combiner le tout (la prédiction et les valeurs SHAP)
-        result_df = pd.concat([predictions_series, shap_df], axis=1)
+        result_df = pd.concat([X, proba, shap_df, predictions], axis=1)
         
         return result_df
 
