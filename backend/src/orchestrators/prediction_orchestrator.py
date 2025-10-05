@@ -9,21 +9,23 @@ class PredictionOrchestrator:
     def __init__(self):
         pass
 
-    def process_and_predict(self, file_content: bytes, filename: str):
+    def process_and_predict(self, data):
         # chargement en bytes des données
-        load_result = DataLoader().load_bytes(file_content, filename)
-        if not load_result.ok:
-            # Cette erreur doit etre géré coté front end
-            return {"error": "Data loading failed", "details": load_result.to_dict()}
+        #load_result = DataLoader().load_bytes(file_content, filename)
 
-        # Convertir les données en DataFrame
-        df = pd.DataFrame(load_result.rows)
+        df = pd.DataFrame(data["rows"], columns=data["columns"])
+        
+        print(df)
+
+       #if not load_result.ok:
+            # Cette erreur doit etre géré coté front end
+            #return {"error": "Data loading failed", "details": load_result.to_dict()
         
         # Prédiction
-        latest_model = ModelDataBaseManager().get_latest_model()
-        prediction = ModelPredictor(latest_model)
-        predictions = self.model.predict(df)
+        #latest_model = ModelDataBaseManager().get_latest_model()
+        #model_predictor = ModelPredictor(latest_model)
+        #predictions = model_predictor.predict(df)
 
-        return {"predictions": predictions}
+        #return {"predictions": predictions}
 
 
