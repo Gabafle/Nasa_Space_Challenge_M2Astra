@@ -74,7 +74,55 @@ class XGBoostModel(BaseModel):
         self.shap_values = self.explainer.explain_prediction(X_train_scaled)
 
 
-    def predict(self, X_test: Union[np.ndarray, pd.DataFrame]) -> np.ndarray:
+    def predict(self, X_test: Union[np.ndarray, pd.DataFrame]) -> pd.DataFrame:
+        """
+        Standardise les nouvelles données, prédit les classes, et retourne un DataFrame
+        contenant la classe prédite et les valeurs SHAP pour la Classe 2.
+        """
+        is_dataframe = isinstance(X_test, pd.DataFrame)
+        
+        if is_dataframe:
+            X_test_np = X_test.values
+            index_to_use = X_test.index
+            # Utilise les noms de features enregistrés lors du train, pour être sûr de la correspondance
+            feature_names = self.feature_names 
+        else:
+            X_test_np = X_test
+            index_to_use = None
+            feature_names = [f'feature_{i}' for i in range(X_test_np.shape[1])]
+            
+        # Standardise les données de test (transform)
+        X_test_scaled = self.scaler.transform(X_test_np)
+        
+        # 1. Faire la prédiction de classe
+        predictions = self.model.predict(X_test_scaled)
+        
+        # 2. Calculer les contributions SHAP (forme attendue : (N_samples, N_features, N_classes))
+        # Nous appelons get_feature_contributions qui utilise l'explainer
+        shap_values_all_classes = self.get_feature_contributions(X_test) 
+        
+        # --- Extraction des valeurs SHAP pour la Classe 2 (Index 2) ---
+        # Si la forme est (N, F, C), on prend l'index 2.
+        # Attention : C'est l'index 2 (la troisième classe) qui est demandée.
+        try:
+            shap_values_class_2 = shap_values_all_classes[:, :, 2] 
+        except IndexError:
+             # Gérer les cas où le modèle est binaire (N, F) ou n'a pas 3 classes
+             # Nous gérons ici l'erreur pour garantir que la méthode ne plante pas.
+             raise ValueError("Erreur SHAP : La 'Classe 2' (index 2) n'existe pas. Veuillez vérifier le nombre de classes de votre modèle.")
+
+        # 3. Créer le DataFrame SHAP
+        shap_df = pd.DataFrame(
+            shap_values_class_2, 
+            index=index_to_use, 
+            columns=feature_names
+        )
+
+        shap_df.columns = [f'{col}_shap' for col in shap_df.columns]
+        predictions_series = pd.Series(predictions, name='Classe_Predite', index=index_to_use)
+        result_df = pd.concat([predictions_series, shap_df], axis=1)
+        
+        return result_dfdef predict(self, X_test: Union[np.ndarray, pd.DataFrame]) -> np.ndarray:
         """
         Standardise les nouvelles données et prédit leurs classes.
         """
