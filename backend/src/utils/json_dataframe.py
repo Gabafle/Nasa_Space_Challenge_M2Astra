@@ -16,8 +16,8 @@ class JsonDataFrame:
             "dec",
         ]
 
-        self.score_cols = ["softmax_class_0", "softmax_class_1", "softmax_class_2"]
-        self.score_cols_front = ["softmax_class_0", "softmax_class_1", "softmax_class_2"]
+        self.score_cols = ["softmax_class_1", "softmax_class_2", "softmax_class_3"]
+        self.score_cols_front = ["softmax_class_1", "softmax_class_2", "softmax_class_3"]
         
         self.target_col = "target"
         self.target_col_front = "vrai label"
@@ -46,29 +46,21 @@ class JsonDataFrame:
                 shap_col = f"{feat}_SHAP"
                 if "shapley" in entry and feat in entry["shapley"]:
                     row[shap_col] = entry["shapley"][feat]
-                else:
-                    row[shap_col] = None  # If SHAP value doesn't exist, use None
 
             # Extract target value, if it exists
             if self.target_col_front in entry:
                 row[self.target_col] = entry[self.target_col_front]
-            else:
-                row[self.target_col] = None  # If target value doesn't exist, use None
 
             # Extract score values, if they exist
             for score_f, score_b in zip(self.score_cols_front, self.score_cols):
                 if score_f in entry:
                     row[score_b] = entry[score_f]
-                else:
-                    row[score_b] = None  # If score value doesn't exist, use None
             
             rows.append(row)
         
         # Convert the list of rows into a DataFrame
         df = pd.DataFrame(rows)
         df[self.feat_cols] = df[self.feat_cols].astype(float)
-        print(f"{df=}")
-        print(f"{df.info()=}")
         return df
 
 
@@ -78,9 +70,9 @@ class JsonDataFrame:
 
         assert all(col in df.columns for col in (self.feat_cols+['id'])), f"df is missing one of the following cols: {self.feat_cols+['id']}"
 
-        has_score = all(col in df.columns for col in self.score_cols)
-        has_target = all(col in df.columns for col in [self.target_col])
-        has_shap = all(col+"_SHAP" in df.columns for col in self.target_col)
+        has_score = set(self.score_cols).issubset(df.columns)
+        has_target = set(self.target_col).issubset(df.columns)
+        has_shap = set([col + '_SHAP' for col in self.feat_cols]).issubset(df.columns)
         
         # Iterate over each row in the dataframe
         for _, row in df.iterrows():
@@ -89,10 +81,10 @@ class JsonDataFrame:
             
             # For each feature column (exclude 'id' column or any non-feature columns)
             for feat in self.feat_cols:
-                features[feat] = int(row[feat])  # Convert to int
+                features[feat] = row[feat]  # Convert to int
                 if has_shap:
                     shap_col = f"{feat}_SHAP"
-                    shapley_values[feat] = int(row[shap_col])  # Convert to int
+                    shapley_values[feat] = row[shap_col]  # Convert to int
             
             # Create the JSON structure for the current row
             row_json = {
@@ -103,8 +95,17 @@ class JsonDataFrame:
             if has_target: row_json[self.target_col_front] = row[self.target_col]
             if has_score:
                 for score_f, score_b in zip(self.score_cols_front, self.score_cols):
-                    row_json[score_f] = row[score_b]
+                    row_json[score_f] = float(row[score_b])
             
             result.append(row_json)
+
+        # print(f"{df.columns=}")
+        # print(f"{set(self.score_cols).issubset(df.columns)=}")
+        # print(f"{set(self.target_col).issubset(df.columns)=}")
+        # print(f"{set([col + '_SHAP' for col in self.feat_cols]).issubset(df.columns)=}")
+        # print(f"{row_json=}")
+        # print(f"{has_score=}")
+        # print(f"{has_target=}")
+        # print(f"{has_shap=}")
         
-        return json.dumps(result, indent=4)
+        return json.dumps({"dataframe": result}, indent=4)
