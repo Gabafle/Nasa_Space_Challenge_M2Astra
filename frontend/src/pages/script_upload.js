@@ -1,7 +1,10 @@
+import { defineComponent } from 'vue'
 import * as XLSX from 'xlsx'
 import api from '../../api/api-config'
+import { useAnalysisResults } from '@/composables/useAnalysisResults'
 
-export default {
+export default defineComponent({
+  name: 'UploadDataPage',
   data() {
     return {
       excelFile: null,
@@ -13,6 +16,10 @@ export default {
       isUploading: false,
       uploadError: null,
     }
+  },
+  setup() {
+    const { setAnalysisResultsFromUpload } = useAnalysisResults()
+    return { setAnalysisResultsFromUpload }
   },
   methods: {
     handleExcelUpload() {
@@ -57,7 +64,7 @@ export default {
           this.excelData = sheetData
           this.resetVisibleRows()
         } catch (err) {
-          console.error('Erreur lors de l\'analyse du fichier', err)
+          console.error("Erreur lors de l'analyse du fichier", err)
           this.uploadError = 'Impossible de lire le fichier fourni.'
           this.removeExcelFile()
         }
@@ -83,11 +90,20 @@ export default {
       this.uploadError = null
 
       try {
-        await api.post('/upload-excel', formData, {
+        const { data } = await api.post('/upload-excel', formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         })
 
-        print()
+        if (!data || !data.result) {
+          this.uploadError = "Aucune analyse n'a ete retournee par le serveur."
+          return
+        }
+
+        this.setAnalysisResultsFromUpload({
+          filename: data.filename,
+          result: data.result,
+        })
+
         this.$router.push('/analyse/pages_users_analysis')
       } catch (error) {
         console.error('Upload Excel error', error)
@@ -122,5 +138,4 @@ export default {
       this.uploadError = null
     },
   },
-}
-
+})
