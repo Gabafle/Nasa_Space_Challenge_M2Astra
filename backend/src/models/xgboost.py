@@ -175,13 +175,15 @@ class XGBoostModel(BaseModel):
         )
     
     def save_model(self, filepath: str):
-        self.model.get_booster().save_model(filepath)
+        #self.model.get_booster().save_model(filepath)
+        self.model.save_model(filepath)
         
     def load_model(self, file_paths) -> None:
         """
         Load_model
         """
-        self.model = XGBClassifier()
-        booster = Booster()
-        booster.load_model(file_paths)
-        self.model._Booster = booster
+        self.set_params()
+        #booster = Booster()
+        #booster.load_model(file_paths)
+        self.model.load_model(file_paths)
+        #self.model._Booster = booster
