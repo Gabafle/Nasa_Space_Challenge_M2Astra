@@ -124,3 +124,6 @@ class XGBoostModel:
     def set_params(self, **params):
         """Définit les paramètres du modèle Scikit-learn, nécessaire pour GridSearchCV."""
         return self.model.set_params(**params)
+    
+    def save_model(self):
+        return self.model.save_raw(raw_format= 'json')
