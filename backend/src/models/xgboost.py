@@ -184,4 +184,11 @@ class XGBoostModel(BaseModel):
         #booster = Booster()
         #booster.load_model(file_paths)
         self.model.load_model(file_paths)
+        
+        self.explainer = ShapelyExplainer(
+            trained_model=self.model, 
+            model_kind=ModelKind.XGBoostTree,
+            # Le modèle a été entraîné sur des données standardisées, 
+            # donc nous passons les données standardisées.
+        )
         #self.model._Booster = booster
