@@ -1,6 +1,5 @@
 <template>
   <v-app>
-
     <v-main class="main">
       <canvas ref="starsCanvas" class="background-canvas"></canvas>
       <v-container
@@ -16,20 +15,30 @@
 
           <h1 class="title mt-4">AstroMetric</h1>
           <p class="subtitle">
-            Analyse intelligente des données d’exoplanètes — Powered by M2Astro
+            Analyse intelligente des données d'exoplanètes — Powered by M2Astro
           </p>
 
+          <v-alert
+            v-if="!isAuthenticated"
+            type="info"
+            variant="tonal"
+            class="mt-6"
+            density="comfortable"
+          >
+            Créez un compte ou connectez-vous pour lancer votre première analyse.
+          </v-alert>
+
           <div class="btn-container">
-            <v-btn to="/upload_data"
+            <v-btn
               class="btn-analyse"
-              elevation="4">
-              Commencer l’analyse
+              elevation="4"
+              :class="{ 'btn-disabled': !isAuthenticated }"
+              @click="startAnalysis"
+            >
+              Commencer l'analyse
               <v-icon end>mdi-google-analytics</v-icon>
             </v-btn>
-
           </div>
-
-
         </div>
       </v-container>
     </v-main>
@@ -37,10 +46,21 @@
 </template>
 
 <script setup lang="ts">
-import Header from '@/components/Header.vue'
 import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuth } from '@/composables/useAuth'
 
 const starsCanvas = ref<HTMLCanvasElement | null>(null)
+const router = useRouter()
+const { isAuthenticated, openAuthDialog } = useAuth()
+
+function startAnalysis() {
+  if (!isAuthenticated.value) {
+    openAuthDialog('register')
+    return
+  }
+  router.push('/upload_data')
+}
 
 onMounted(() => {
   const canvas = starsCanvas.value
@@ -56,7 +76,7 @@ onMounted(() => {
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
       size: Math.random() * 1.5 + 0.5,
-      speed: Math.random() * 0.3 + 0.1
+      speed: Math.random() * 0.3 + 0.1,
     }))
   }
 
@@ -80,21 +100,14 @@ onMounted(() => {
 </script>
 
 <style scoped>
-
 .background-canvas {
   position: fixed;
   top: 0;
   left: 0;
   z-index: 0;
   width: 100%;
-  height: 100%;;
+  height: 100%;
 }
-
-
-/* ================================
-   STRUCTURE
-   ================================ */
-
 
 .cover-container {
   height: 100vh;
@@ -106,9 +119,6 @@ onMounted(() => {
   overflow: hidden;
 }
 
-/* ================================
-   LOGO & TITRE
-   ================================ */
 .logo {
   width: 120px;
   height: 120px;
@@ -116,7 +126,7 @@ onMounted(() => {
 }
 
 .title {
-  font-family: "Arial Black";
+  font-family: 'Arial Black';
   font-size: 3rem;
   font-weight: 700;
   color: #48f1af;
@@ -125,38 +135,36 @@ onMounted(() => {
 }
 
 .subtitle {
-  font-family: "Arial",serif;
+  font-family: 'Arial', serif;
   font-size: 1.2rem;
   color: #e0f6f0;
   margin-top: 0.5rem;
   letter-spacing: 1px;
-
 }
 
-/* ================================
-   BOUTON
-   ================================ */
-.btn-container{
+.btn-container {
   width: 100%;
   margin-top: 3rem;
   display: flex;
-  justify-content:space-around;
+  justify-content: space-around;
 }
+
 .btn-analyse {
-  background: linear-gradient(30deg, #169976, #1DCD9F);
+  background: linear-gradient(30deg, #169976, #1dcd9f);
   color: white;
   transition: all 0.3s ease;
 }
 
 .btn-analyse:hover {
   transform: scale(1.05);
-  background: linear-gradient(30deg, #169976, #1DCD9F);
+  background: linear-gradient(30deg, #169976, #1dcd9f);
 }
 
+.btn-disabled {
+  filter: grayscale(0.4);
+  opacity: 0.8;
+}
 
-/* ================================
-   ANIMATIONS
-   ================================ */
 .fade-in {
   animation: fadeIn 1.5s ease-in-out;
 }
@@ -177,6 +185,5 @@ onMounted(() => {
   text-align: center;
   display: flex;
   flex-direction: column;
-
 }
 </style>

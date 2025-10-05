@@ -2,9 +2,10 @@
   <v-container class="body-upload-pages">
     <div class="excel-container">
       <v-card class="upload-card">
-        <v-card-title>Uploader un fichier Excel</v-card-title>
+        <v-card-title class="upload-card-title">Uploader un fichier Excel</v-card-title>
         <v-card-text>
           <v-file-input
+            class="upload-input"
             v-model="excelFile"
             label="Choisissez un fichier Excel"
             show-size
@@ -48,17 +49,20 @@
           </v-table>
         </v-infinite-scroll>
       </v-card>
+      <v-container class="submit-are">
+        <v-btn to="/"> Back</v-btn>
+        <v-btn
+          color="primary"
+          :disabled="!excelFile || isUploading"
+          :loading="isUploading"
+          @click="submitAnalysis"
+        >
+          <v-icon class="mr-2">mdi-cube</v-icon>
+          Analyser
+        </v-btn>
 
-      <v-btn
-        class="submit-are"
-        color="primary"
-        :disabled="!excelFile || isUploading"
-        :loading="isUploading"
-        @click="submitAnalysis"
-      >
-        <v-icon class="mr-2">mdi-cube</v-icon>
-        Analyser
-      </v-btn>
+      </v-container>
+
     </div>
   </v-container>
 </template>
@@ -66,6 +70,12 @@
 <script src="./script_upload.js"></script>
 
 <style scoped>
+.upload-card-title{
+  color: #c4eddd;
+}
+.upload-input{
+  color: #48f1af;
+}
 .v-card {
   border-radius: 8px;
 }
@@ -92,7 +102,7 @@
 
 .submit-are {
   display: flex;
-  margin: 2rem 0 0 auto;
+  justify-content: space-between;
 }
 </style>
 

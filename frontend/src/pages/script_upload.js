@@ -87,7 +87,8 @@ export default {
           headers: { 'Content-Type': 'multipart/form-data' },
         })
 
-        this.$router.push('/analyser')
+        print()
+        this.$router.push('/analyse/pages_users_analysis')
       } catch (error) {
         console.error('Upload Excel error', error)
         this.uploadError = error?.response?.data?.detail || "Erreur lors de l'envoi du fichier."
