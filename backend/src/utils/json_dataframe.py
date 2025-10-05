@@ -27,7 +27,8 @@ class JsonDataFrame:
     def json_to_dataframe(self, json_str: str) -> pd.DataFrame:
         """ Respectez le format du front pour le json """
         # do the opposite of dataframe_to_json
-        data = json.loads(json_str)
+        if isinstance(json_str, str): data = json.loads(json_str)
+        else : data = json_str  # assume it's already a list of dicts
         
         # Prepare a list to collect the DataFrame rows
         rows = []
