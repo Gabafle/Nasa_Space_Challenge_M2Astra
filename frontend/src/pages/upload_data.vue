@@ -8,7 +8,7 @@
             v-model="excelFile"
             label="Choisissez un fichier Excel"
             show-size
-            accept=".xlsx, .xls"
+            accept=".xlsx, .xls, .csv"
             @change="handleExcelUpload"
           ></v-file-input>
 
@@ -95,3 +95,4 @@
   margin: 2rem 0 0 auto;
 }
 </style>
+

@@ -1,7 +1,7 @@
 import json
 import numpy as np
 import pandas as pd
-from .utils import JsonDataFrame
+from backend.src.utils.json_dataframe import JsonDataFrame
 
 # TODOOOOOOO
 class ModelPredictor:
